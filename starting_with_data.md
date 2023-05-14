@@ -1,8 +1,13 @@
 Question 1: Which cities and countries have the highest level of transaction revenues on the site?
 
 SQL Queries:
+SELECT SUM(a.revenue), al.city, al.country FROM analytics a
+JOIN all_sessions al USING(visitid)
+WHERE a.revenue IS NOT NULL 
+GROUP BY al.city, al.country
+ORDER BY SUM(a.revenue) DESC
 
-Answer: 
+Answer: The United States, Switzerland, and Israel had the highest total revenue, with New York, Tel Aviv-Yafo, and Zurich having the highest total revenues in their respective countries. The U.S. cities of Sunnyvale, Mountain View, Seattle, San Francisco, Chicago, San Jose, and Palo Alto all ranked higher than Tel Aviv-Yafo or Zurich. While New York had the most total revenue of listed cities, it should be noted that the highest-ranked revenues were for a U.S. city whose name is missing from the database.
 
 
 
