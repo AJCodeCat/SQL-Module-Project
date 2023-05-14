@@ -17,9 +17,11 @@ RENAME COLUMN name to productname;
 SELECT MIN(units_sold) FROM analytics;
 SELECT MAX(units_sold) FROM analytics;
 
-
 –Unit_price had a maximum of 995,000,000, which seems unlikely, along with other similarly large figures in this column. The figures were updated
 UPDATE analytics
 SET unit_price = unit_price/1000000
 WHERE unit_price > 0;
+
+–All_sessions.totaltransactionrevenue is mistyped as “character varying” rather than a numerical type. I changed it.
+
 
