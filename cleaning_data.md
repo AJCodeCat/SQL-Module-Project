@@ -22,6 +22,41 @@ UPDATE analytics
 SET unit_price = unit_price/1000000
 WHERE unit_price > 0;
 
-–All_sessions.totaltransactionrevenue is mistyped as “character varying” rather than a numerical type. I changed it.
+–All_sessions has two columns, totaltransactionrevenue and productquantity is mistyped as “character varying” rather than a numerical types. I changed them.
+DROP TABLE all_sessions;
+CREATE TABLE all_sessions 
+(fullVisitorId varchar,
+channelGrouping varchar,
+time varchar,
+country varchar,
+city varchar,
+totalTransactionRevenue numeric,
+transactions int,
+timeOnSite int,
+pageviews int,
+sessionQualityDim int,
+date date,
+visitId int,
+type varchar,
+productRefundAmount varchar,
+productQuantity int,
+productPrice int,
+productRevenue varchar,
+productSKU varchar,
+v2ProductName varchar,
+v2ProductCategory varchar,
+productVariant varchar,
+currencyCode varchar,
+itemQuantity int,
+itemRevenue int,
+transactionRevenue int,
+transactionId varchar,
+pageTitle varchar,
+searchKeyword varchar,
+pagePathLevel1 varchar,
+eCommerceAction_type int,
+eCommerceAction_step int,
+eCommerceAction_option varchar
+);
 
 
