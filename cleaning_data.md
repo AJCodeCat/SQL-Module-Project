@@ -69,6 +69,13 @@ eCommerceAction_step int,
 eCommerceAction_option varchar
 );
 
+----DROPPING 100% NULL COLUMNS----
+Syntax:
+ALTER TABLE [table_name]
+DROP COLUMN [column_name]
+
+DROPPED COLUMNS: all_sessions.itemquanity, all_sessions.itemrevenue, all_sessions.searchkeyword, analytics.userid
+
 ---TABLE and COLUMN NOTES---
 
 --Syntax used for each column in every table:
@@ -151,7 +158,7 @@ WHERE country = 'not available in demo dataset'
 
 --SALES_BY_SKU TABLE--
 
---Both columns have a full, 462 rows of non-null values. But they overlap with the same columns in 
+--Both columns have a full, 462 rows of non-null values. But they overlap with the same columns in SALE_REPORT table.
 
 
 --SALES_REPORT TABLE--
