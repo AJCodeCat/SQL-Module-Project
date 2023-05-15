@@ -69,6 +69,11 @@ eCommerceAction_option varchar
 );
 
 --TABLE and COLUMN NOTES--
+--Syntax used for each column in every table:
+SELECT [column_name]
+FROM [table_name]
+WHERE [column_name] IS NOT NULL
+
 --ALL_SESSIONS
 --The all_sessions column "searchkeyword" is 100% null. It adds no data, no information, and could be deleted from this database.
 --The all_sessions column "pagetitle" has two visitorID from Taiwan and one from Japan that include non-alphanumeric characters along with English words.
