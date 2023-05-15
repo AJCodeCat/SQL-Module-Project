@@ -7,7 +7,7 @@ WHERE a.revenue IS NOT NULL
 GROUP BY al.city, al.country
 ORDER BY SUM(a.revenue) DESC
 
-Answer: The United States, Switzerland, and Israel had the highest total revenue, with New York, Tel Aviv-Yafo, and Zurich having the highest total revenues in their respective countries. The U.S. cities of Sunnyvale, Mountain View, Seattle, San Francisco, Chicago, San Jose, and Palo Alto all ranked higher than Tel Aviv-Yafo or Zurich. While New York had the most total revenue of listed cities, it should be noted that the highest-ranked revenues were for a U.S. city whose name is missing from the database.
+Answer: The United States, Canada, Germany Switzerland, and Israel had the highest total revenue, with New York, TorontoTel Aviv-Yafo, and Zurich having the highest total revenues in their respective countries. California and cities with large numbers of university students placed high in the revenue rankings. The U.S. cities of Palo Alto, Cali., Cambridge, Mass., and Ann Arbor, Mich., are all notable university towns, and the California cities of Meadow View, Sunnyvale, and San Bruno also have universities. While New York had the most total revenue of listed cities, it should be noted that the highest-ranked revenues were for a U.S. city or cities whose names are missing from the database, and thus getting aggregated together, as was the case for Germany.
 
 
 
