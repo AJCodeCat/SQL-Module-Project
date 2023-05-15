@@ -17,10 +17,19 @@ RENAME COLUMN name to productname;
 SELECT MIN(units_sold) FROM analytics;
 SELECT MAX(units_sold) FROM analytics;
 
-–Unit_price had a maximum of 995,000,000, which seems unlikely, along with other similarly large figures in this column. The figures were updated
+–Unit_price had a maximum of 995,000,000, which seems unlikely, along with other similarly large figures in this column. The figures were updated, as were columns in the all_sessions table with the same issue.
 UPDATE analytics
 SET unit_price = unit_price/1000000
 WHERE unit_price > 0;
+
+UPDATE all_sessions
+SET productprice = productprice/1000000;
+
+UPDATE all_sessions
+SET transactionrevenue = transactionrevenue/1000000;
+
+UPDATE all_sessions
+SET totaltransactionrevenue = totaltransactionrevenue/1000000;
 
 –All_sessions has two columns, totaltransactionrevenue and productquantity is mistyped as “character varying” rather than a numerical types. I changed them.
 DROP TABLE all_sessions;
