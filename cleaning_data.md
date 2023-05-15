@@ -68,4 +68,12 @@ eCommerceAction_step int,
 eCommerceAction_option varchar
 );
 
-
+--NOTES--
+--ALL_SESSIONS
+--The all_sessions column "searchkeyword" is 100% null. It adds no data, no information, and could be deleted from this database.
+--The all_sessions column "pagetitle" has two visitorID from Taiwan and one from Japan that include non-alphanumeric characters along with English words.
+--The all_sessions column "ecommerceaction_option" only has 31 rows that are not null, which may not be sufficient for any meaningful analysis. Consider for deletion.
+--"transactions" has 81 non-null rows.
+--"transactionID" has 9 non-null rows.
+--"transactionrevenue" has 81 non-null rows that perfectly coincide with the 81 non-null rows of the "transactions" column.
+--"transactionrevenue" has 4 non-null rows.
