@@ -9,11 +9,12 @@ Queries:
 Below, provide the SQL queries you used to clean your data.
 
 --"Name" is an ambiguous column title. Product name? Visitor name? I changed it to “productname” for clarity here and in the Products table. 
+
 –The same ambiguity issue with “SKU” in one table, which doesn’t match the other tables with “productSKU.” Now all SKU-related titles match.
 ALTER TABLE sales_report
 RENAME COLUMN name to productname;
 
-–Check minimum and maximum values on numeric tables to ensure that no entries are outside the realm of reasonable possibility, such as negative numbers. Units_sold had a value of -89 in one row, which is not possible. 
+–Check minimum and maximum values on numeric tables to ensure that no entries are outside the realm of reasonable possibility, such as negative numbers. Units_sold had a value of -89 in one row, which is not possible. Syntax examples:
 SELECT MIN(units_sold) FROM analytics;
 SELECT MAX(units_sold) FROM analytics;
 
@@ -75,33 +76,55 @@ FROM [table_name]
 WHERE [column_name] IS NOT NULL
 
 --ALL_SESSIONS
+
 --The all_sessions column "searchkeyword" is 100% null. It adds no data, no information, and could be deleted from this database.
+
 --The all_sessions column "pagetitle" has two visitorID from Taiwan and one from Japan that include non-alphanumeric characters along with English words.
+
 --The all_sessions column "ecommerceaction_option" only has 31 rows that are not null, which may not be sufficient for any meaningful analysis. Consider for deletion.
---"transactions" has 81 non-null rows.
---"transactionID" has 9 non-null rows.
---"transactionrevenue" has 81 non-null rows that perfectly coincide with the 81 non-null rows of the "transactions" column.
---"transactionrevenue" has 4 non-null rows.
+
+--"transactions" only has 81 non-null rows.
+
+--"transactionID" only has 9 non-null rows.
+
+--"transactionrevenue" only has 81 non-null rows that perfectly coincide with the 81 non-null rows of the "transactions" column.
+
+--"transactionrevenue" only has 4 non-null rows.
 
 --PRODUCTS
+
 --All columns except the two "sentiment--" ones have all fields in 1092 rows, and those two each only have one null row. Beautiful.
 
 --SALES_BY_SKU
+
 --Both columns have a full, 462 rows of non-null values. But they overlap with the same columns in 
 
 --SALES_REPORT
+
 --Only null values are in "ratio" column when its two components, totalordered and stocklevel, are both zero. For all other columns, all 454 rows are non-null.
 
 --ANALYTICS
+
 --Has 4,301,122 rows
---"Bounces" has 474,839 non-null rows.
+
+--"bounces" has 474,839 non-null rows.
+
 --"channelgrouping" has all non-null rows.
---"date" full
---"fullvisitorid" full
---"pageviews" has 4,301,050
---"revenue" has 15,355
---"socialengagementtype" full
---"timeonsite" has 3,823,657
---"unit_price" fulL
---"units_sold" has 95,147
---"userid" is 100% null values. Consider for deltion.
+
+--"date" full 4,301,122 rows
+
+--"fullvisitorid" full 4,301,122 rows
+
+--"pageviews" has 4,301,050 non-null rows
+
+--"revenue" has 15,355 non-null rows
+
+--"socialengagementtype" full 4,301,122 rows
+
+--"timeonsite" has 3,823,657 non-null rows
+
+--"unit_price" full 4,301,122 rows
+
+--"units_sold" has 95,147 non-null rows
+
+--"userid" is 100% null values. Consider for deletion.
