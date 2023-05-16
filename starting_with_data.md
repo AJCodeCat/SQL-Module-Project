@@ -15,6 +15,7 @@ Question 2: What is the average number of products ordered from visitors in each
 
 SQL Queries:
 
+
 Answer:
 
 
@@ -30,6 +31,12 @@ Answer:
 Question 4: What is the top-selling product from each city/country? Can we find any pattern worthy of noting in the products sold?
 
 SQL Queries:
+SELECT DISTINCT ON (al.city) al.city, p.productname, SUM(p.orderedquantity) AS totalordered
+FROM all_sessions al
+JOIN products p on p.productname = al.v2productname
+WHERE al.city IS NOT NULL AND al.city != 'not available in demo dataset'
+	AND al.city != '(not set)'
+GROUP BY al.city, p.productname
 
 Answer:
 
@@ -38,5 +45,43 @@ Answer:
 Question 5: Can we summarize the impact of revenue generated from each city/country?
 
 SQL Queries:
+--COUNTRY PERCENTAGE OF TOTAL REVENUE--
+SELECT al.country, SUM(a.revenue) as totalcountryrevenue, 
+	(SUM(a.revenue)/1167078437957 * 100) AS PercentTotalRevenue
+FROM all_sessions al
+JOIN analytics a USING(fullvisitorid)
+WHERE a.revenue IS NOT NULL
+GROUP BY al.country
+ORDER BY totalcountryrevenue DESC
+***Results in 5 rows***
+
+SELECT al.country, SUM(a.revenue) as totalcountryrevenue, 
+	(SUM(a.revenue)/1167078437957 * 100) AS PercentTotalRevenue
+FROM all_sessions al
+JOIN analytics a USING(fullvisitorid)
+GROUP BY al.country
+ORDER BY totalcountryrevenue DESC
+***Results in 105 rows***
+
+--CITY PERCENTAGE OF TOTAL REVENUE--
+SELECT al.country, al.city, SUM(a.revenue) as totalcityrevenue, 
+	(SUM(a.revenue)/1167078437957 * 100) AS PercentTotalRevenue
+FROM all_sessions al
+JOIN analytics a USING(fullvisitorid)
+WHERE a.revenue IS NOT NULL
+	AND al.city IS NOT NULL 
+	AND al.city != 'not available in demo dataset'
+	AND al.city != '(not set)'
+GROUP BY al.country, al.city
+ORDER BY totalcityrevenue DESC
+
+SELECT al.city, SUM(a.revenue) as totalcityrevenue, 
+	(SUM(a.revenue)/1167078437957 * 100) AS PercentTotalRevenue
+FROM all_sessions al
+JOIN analytics a USING(fullvisitorid)
+WHERE a.revenue IS NOT NULL
+GROUP BY al.city
+ORDER BY totalcityrevenue DESC
+***"not available in demo dataset" is 7.12% of the total revenue.***
 
 Answer:
