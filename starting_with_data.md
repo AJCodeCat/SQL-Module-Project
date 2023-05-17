@@ -13,9 +13,13 @@ Answer:
 
 **Top 5 Products by Pageviews**
 1268	" Men's 100% Cotton Short Sleeve Hero Tee White"
+
 1038	" Twill Cap"
+
 747	"22 oz  Bottle Infuser"
+
 734	" Men's Vintage Tank"
+
 733	" Men's 100% Cotton Short Sleeve Hero Tee Navy"
 
 
@@ -23,30 +27,29 @@ Question 2: What dates had the most site visits?
 
 SQL Queries:
 
-SELECT al.date, COUNT(a.visitid), sr.productname
+SELECT al.date, COUNT(a.visitid)
 FROM all_sessions al
-JOIN sales_report sr USING(productsku)
 JOIN analytics a USING(fullvisitorid)
 WHERE a.visitid IS NOT NULL
-GROUP BY al.date, sr.productname
+GROUP BY al.date
 ORDER BY COUNT(a.visitid) DESC
 
 
 Answer:
 
 **Top 10 Dates by Site Visits**
-"2017-06-27"	2790	" Power Bank"
-"2017-03-13"	1582	"Android Twill Cap"
-"2016-12-02"	1582	" Lunch Bag"
-"2017-05-24"	1558	"Clip-on Compact Charger"
-"2017-06-05"	1109	"Android Wool Heather Cap Heather/Black"
-"2017-07-08"	969	" Device Stand"
-"2017-05-01"	852	"7 Dog Frisbee"
-"2017-05-01"	852	" Collapsible Pet Bowl"
-"2017-05-09"	840	" Custom Decals"
-"2017-01-11"	839	" Custom Decals"
+"2017-05-24"	4435
+"2017-06-27"	4411
+"2017-05-22"	3574
+"2017-06-05"	3402
+"2017-05-01"	3401
+"2017-05-18"	3204
+"2017-07-25"	2815
+"2017-07-08"	2745
+"2017-06-21"	2733
+"2017-05-09"	2641
 
-You get the exact same results if you replace "a.visitid" with "al.fullvisitorid".
+You get the exact same results if you replace "a.visitid" with "al.fullvisitorid". From the productcategory-by-country analysis, I discovered that the United Kingdom's most-popular purchases were from a category termed "Spring Sale." Seeing how the most visits clustered in the spring, with half of the top 10 dates occurring in May, it's possible that the sale spurred more visits generally.
 
 Question 3: What products had the highest sentiment scores?
 
@@ -87,19 +90,31 @@ Answer:
 
 
 
-Question 4: What is the top-selling product from each city/country? Can we find any pattern worthy of noting in the products sold?
+Question 4: What is the top month for sales of the popular SPF-15 Slim & Slender Lip Balm?
 
 SQL Queries:
-SELECT DISTINCT ON (al.city) al.city, p.productname, SUM(p.orderedquantity) AS totalordered
+
+SELECT DATE_TRUNC('MONTH', al.date) AS Month, SUM(a.units_sold)
 FROM all_sessions al
-JOIN products p on p.productname = al.v2productname
-WHERE al.city IS NOT NULL 
-	AND al.city != 'not available in demo dataset'
-	AND al.city != '(not set)'
-GROUP BY al.city, p.productname
+JOIN sales_report sr USING(productsku)
+JOIN analytics a USING(fullvisitorid)
+WHERE sr.productname = 'SPF-15 Slim & Slender Lip Balm' 
+GROUP BY DATE_TRUNC('month', al.date), al.date
+ORDER BY SUM(a.units_sold) DESC
 
 Answer: Some of the same items, like the "SPF-15 Slim & Slender Lip Balm" were popular in more than one location. The "26 oz Double Wall Insulated Bottle" sold an equal 845 units in both Barcelona and Bangkok, for example.
 
+"2017-07-01 00:00:00-04"	
+"2017-05-01 00:00:00-04"	
+"2017-05-01 00:00:00-04"	
+"2017-05-01 00:00:00-04"	
+"2017-06-01 00:00:00-04"	
+"2017-06-01 00:00:00-04"	
+"2017-06-01 00:00:00-04"	
+"2017-06-01 00:00:00-04"	
+"2017-05-01 00:00:00-04"	
+"2017-07-01 00:00:00-04"	
+"2017-07-01 00:00:00-04"	203
 
 
 Question 5: Can we summarize the impact of revenue generated from each city/country?
