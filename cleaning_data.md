@@ -72,11 +72,14 @@ eCommerceAction_option varchar
 );
 
 ----DROPPING 100% NULL COLUMNS----
+
 Syntax:
+
 ALTER TABLE [table_name]
+
 DROP COLUMN [column_name]
 
-DROPPED COLUMNS: all_sessions.itemquanity, all_sessions.itemrevenue, all_sessions.searchkeyword, analytics.userid
+DROPPED COLUMNS: all_sessions.itemquanity, all_sessions.itemrevenue, all_sessions.searchkeyword, analytics.userid, all_sessions.transactionrevenue
 
 ---TABLE and COLUMN NOTES---
 
@@ -98,13 +101,24 @@ WHERE [column_name] IS NOT NULL
 
 --"itemrevenue" is 100% null. It adds no data, no information, and could be deleted from this database.
 
+    --Various "Transaction" Columns Analysis--
+    SYNTAX:
+SELECT totaltransactionrevenue, transactionrevenue, transactions, transactionID
+
+FROM all_sessions al
+
+WHERE transactionrevenue IS NOT NULL
+
+    --Code repeated for each "SELECT" column replaced in the "WHERE" filter.
+
 --"transactions" only has 81 non-null rows.
 
 --"transactionID" only has 9 non-null rows.
 
 --"totaltransactionrevenue" only has 81 non-null rows that perfectly coincide with the 81 non-null rows of the "transactions" column.
 
---"transactionrevenue" only has 4 non-null rows.
+--"transactionrevenue" only has 4 non-null rows, all having the same values as the totaltransactionrevenue column for those rows. Duplicate information, could be deleted.
+
 
 --"channelgrouping" has 15,134 non-null rows.
 
