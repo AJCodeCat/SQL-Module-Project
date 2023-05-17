@@ -1,78 +1,90 @@
-Question 1: Which cities and countries have the highest level of transaction revenues on the site?
+Question 1: What products got the most pageviews?
 
 SQL Queries:
-SELECT SUM(a.revenue), al.city, al.country
-FROM analytics a
-JOIN all_sessions al USING(visitid)
-WHERE a.revenue IS NOT NULL
-GROUP BY al.city, al.country
-ORDER BY SUM(a.revenue) DESC
 
-Answer: The United States, Canada, Germany Switzerland, and Israel had the highest total revenue, with New York, TorontoTel Aviv-Yafo, and Zurich having the highest total revenues in their respective countries. California and cities with large numbers of university students placed high in the revenue rankings. The U.S. cities of Palo Alto, Cali., Cambridge, Mass., and Ann Arbor, Mich., are all notable university towns, and the California cities of Meadow View, Sunnyvale, and San Bruno also have universities. While New York had the most total revenue of listed cities, it should be noted that the highest-ranked revenues were for a U.S. city or cities whose names are missing from the database, and thus getting aggregated together, as was the case for Germany.
+SELECT SUM(al.pageviews), sr.productname
+FROM all_sessions al
+JOIN sales_report sr USING(productsku)
+WHERE al.pageviews IS NOT NULL
+GROUP BY sr.productname
+ORDER BY SUM(al.pageviews) DESC
+
+Answer: 
+
+**Top 5 Products by Pageviews**
+1268	" Men's 100% Cotton Short Sleeve Hero Tee White"
+1038	" Twill Cap"
+747	"22 oz  Bottle Infuser"
+734	" Men's Vintage Tank"
+733	" Men's 100% Cotton Short Sleeve Hero Tee Navy"
 
 
-
-Question 2: What is the average number of products ordered from visitors in each city and country?
+Question 2: What dates had the most site visits?
 
 SQL Queries:
---AVG NUMBER OF PRODUCTS BY COUNTRY--
-SELECT al.country, AVG(p.orderedquantity) AS avgquantity
-FROM all_sessions al
-JOIN products p on p.productname = al.v2productname
-WHERE al.country IS NOT NULL 
-GROUP BY al.country
-ORDER BY avgquantity DESC
 
---AVG NUMBER OF PRODUCTS BY CITY--
-SELECT al.city, AVG(p.orderedquantity) AS avgquantity
+SELECT al.date, COUNT(a.visitid), sr.productname
 FROM all_sessions al
-JOIN products p on p.productname = al.v2productname
-WHERE al.city IS NOT NULL AND al.city != 'not available in demo dataset'
-	AND al.city != '(not set)'
-GROUP BY al.city
-ORDER BY avgquantity DESC
+JOIN sales_report sr USING(productsku)
+JOIN analytics a USING(fullvisitorid)
+WHERE a.visitid IS NOT NULL
+GROUP BY al.date, sr.productname
+ORDER BY COUNT(a.visitid) DESC
+
 
 Answer:
-Top 5 Countries by Avg Quantity Ordered
-"Bulgaria"	1241.20
-"Kazakhstan"	1184.00
-"Saudi Arabia"	1047.33
-"Serbia"	984.50
-"Costa Rica"	879.00
 
-Top 5 Cities by Avg Quantity Ordered
-"Santa Fe"	3682
-"Zhongli District"	3582
-"Riyadh"	3071
-"Brno"	3071
-"Saint Petersburg"	3071
-The closeness of the values for the top cities and in particular the three matching values is suspicious. More detailed examination is necessary to determine if the results are accurate.
+**Top 10 Dates by Site Visits**
+"2017-06-27"	2790	" Power Bank"
+"2017-03-13"	1582	"Android Twill Cap"
+"2016-12-02"	1582	" Lunch Bag"
+"2017-05-24"	1558	"Clip-on Compact Charger"
+"2017-06-05"	1109	"Android Wool Heather Cap Heather/Black"
+"2017-07-08"	969	" Device Stand"
+"2017-05-01"	852	"7 Dog Frisbee"
+"2017-05-01"	852	" Collapsible Pet Bowl"
+"2017-05-09"	840	" Custom Decals"
+"2017-01-11"	839	" Custom Decals"
 
+You get the exact same results if you replace "a.visitid" with "al.fullvisitorid".
 
-Question 3: Is there any pattern in the types (product categories) of products ordered from visitors in each city and country?
+Question 3: What products had the highest sentiment scores?
+
+What products had the highest sentiment magnitude?
 
 SQL Queries:
---TOP PRODUCT CATEGORIES BY COUNTRY--
-SELECT DISTINCT ON(al.v2productcategory) al.v2productcategory, al.country, 
-	SUM(p.orderedquantity)           
-FROM all_sessions al
-JOIN analytics a USING(fullvisitorid)
-JOIN products p on p.productname = al.v2productname
-WHERE v2productcategory LIKE '%/' AND p.orderedquantity > 0
-GROUP BY v2productcategory, country
 
---TOP PRODUCT CATEGORIES BY CITY--
-SELECT DISTINCT ON(al.v2productcategory) al.v2productcategory, al.city, 
-	SUM(p.orderedquantity)           
-FROM all_sessions al
-JOIN analytics a USING(fullvisitorid)
-JOIN products p on p.productname = al.v2productname
-WHERE v2productcategory LIKE '%/' AND p.orderedquantity > 0
-GROUP BY v2productcategory, city
+--Top Avg Sentiment Scores--
+SELECT productname, AVG(sentimentscore)
+FROM products p
+GROUP BY productname
+ORDER BY AVG(sentimentscore) DESC
+
+--Top Avg Sentiment Magnitude--
+SELECT productname, AVG(sentimentmagnitude)
+FROM products p
+GROUP BY productname
+ORDER BY AVG(sentimentmagnitude) DESC
 
 Answer:
-In countries' product categories, Australians wanted men's clothing, with men's outerwear (384) and t-shirts (5406) being ordered as well as other apparel (8064) but nothing topped stickers (10,164). Canadians bought both notebooks (73,704) and writing instruments (60,476), a possibly complementary choice. The British went for items included in the Spring Sale (23,400).
-Looking at the cities, Hyderabad, India, loves stickers (12,000), and Ann Arborites acquired many items from the Clearance Sale (15,990).
+
+**Top 4 Products by Sentiment Score**
+"USB wired soundbar - in store only"	1
+" Men's Vintage Tee"	0.9
+" Pocket Bluetooth Speaker"	0.9
+" G Noise-reducing Bluetooth Headphones"	0.8500000000000001
+[12 products tied with scores of 0.8.]
+
+**Top 5 Products by Sentiment Magnitude**
+" Women's Colorblock Tee White"	2
+"Rocket Flashlight"	1.4
+" Men's Vintage Tee"	1.4
+" Executive Umbrella"	1.35
+" Men's Convertible Vest-Jacket Pewter"	1.35
+
+**There was one product in both Top sentiment lists: Men's Vintage Tee.**
+
+
 
 
 Question 4: What is the top-selling product from each city/country? Can we find any pattern worthy of noting in the products sold?
