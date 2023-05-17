@@ -1,5 +1,7 @@
 What issues will you address by cleaning the data?
+
 I looked for duplicates and data that does not appear to be accurate, in the sense of being out of range (too big or small) for what its column represents. I also made SKU column names the same across tables for ease in "JOIN" needs. the biggest hurdle to creating a dataset for meaningful analysis is the large number of null values in many columns, some having only null values in all rows.
+To begin, though, one table, sales_by_sku, was dropped completely because its two columns matched columns already contained in the sales_report table.
 
 
 
@@ -8,11 +10,11 @@ I looked for duplicates and data that does not appear to be accurate, in the sen
 Queries:
 Below, provide the SQL queries you used to clean your data.
 
---"Name" is an ambiguous column title. Product name? Visitor name? I changed it to “productname” for clarity here and in the Products table. 
-
-–The same ambiguity issue with “SKU” in one table, which doesn’t match the other tables with “productSKU.” Now all SKU-related titles match.
+--"Name" is an ambiguous column title. Product name? Visitor name? I changed it to “productname” for clarity here (sales_report) and in the Products table.
 ALTER TABLE sales_report
 RENAME COLUMN name to productname;
+
+–The same ambiguity issue with “SKU” in one table, which doesn’t match the other tables with “productSKU.” Now all SKU-related titles match. This issue was noted when I looked over the CSV files before importing them into the database, so I changed it directly in those files before adding them.
 
 –Check minimum and maximum values on numeric tables to ensure that no entries are outside the realm of reasonable possibility, such as negative numbers. Units_sold had a value of -89 in one row, which is not possible. Syntax examples:
 SELECT MIN(units_sold) FROM analytics;
