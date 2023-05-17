@@ -1,12 +1,17 @@
-Question 1: What products got the most pageviews?
+Question 1: Which products received the most pageviews?
 
 SQL Queries:
 
 SELECT SUM(al.pageviews), sr.productname
+
 FROM all_sessions al
+
 JOIN sales_report sr USING(productsku)
+
 WHERE al.pageviews IS NOT NULL
+
 GROUP BY sr.productname
+
 ORDER BY SUM(al.pageviews) DESC
 
 Answer: 
@@ -28,10 +33,15 @@ Question 2: What dates had the most site visits?
 SQL Queries:
 
 SELECT al.date, COUNT(a.visitid)
+
 FROM all_sessions al
+
 JOIN analytics a USING(fullvisitorid)
+
 WHERE a.visitid IS NOT NULL
+
 GROUP BY al.date
+
 ORDER BY COUNT(a.visitid) DESC
 
 
@@ -68,16 +78,25 @@ What products had the highest sentiment magnitude?
 SQL Queries:
 
 --Top Avg Sentiment Scores--
+
 SELECT productname, AVG(sentimentscore)
+
 FROM products p
+
 GROUP BY productname
+
 ORDER BY AVG(sentimentscore) DESC
 
 --Top Avg Sentiment Magnitude--
+
 SELECT productname, AVG(sentimentmagnitude)
+
 FROM products p
+
 GROUP BY productname
+
 ORDER BY AVG(sentimentmagnitude) DESC
+
 
 Answer:
 
